@@ -8,6 +8,7 @@ export const SYMBOLS = {
     6: '6️⃣',
     7: '7️⃣',
     8: '8️⃣',
+    9: '9️⃣',
     FLAG: '🚩',
     BOMB: '💣',
     BOMB_EXPLODED: '💥',
