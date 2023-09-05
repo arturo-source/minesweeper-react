@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { randomNumberGenerator } from '../utils.js'
 import { SYMBOLS } from '../constants.js'
 import { Square } from './Square.jsx'
 
 export function Board({
+    playerHasWon, playerHasLost,
     totalBombs, tableSize, randomSeed,
-    playerHasWon, setPlayerHasWon, playerHasLost, setPlayerHasLost,
     tableCells, setTableCells, tableCellsInfo, setTableCellsInfo,
     restartGame
 }) {
@@ -153,17 +153,10 @@ export function Board({
         const newTableCells = [...tableCells]
         newTableCells[index] = cellToDiscover
         setTableCells(newTableCells)
-
-        const isGameWon = newTableCells.every((cell, index) => {
-            const isBomb = tableCellsInfo[index] === SYMBOLS.BOMB
-            const isDiscovered = cell !== null
-            return isBomb || isDiscovered
-        })
-        if (isGameWon) setPlayerHasWon(true)
-        if (cellToDiscover === SYMBOLS.BOMB) setPlayerHasLost(true)
     }
 
     const addFlag = (index) => {
+        if (isFirstPlay) return
         if (playerHasLost || playerHasWon) return
 
         const alreadyDiscovered = tableCells[index] !== null && tableCells[index] !== SYMBOLS.FLAG
