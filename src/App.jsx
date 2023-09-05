@@ -32,7 +32,7 @@ function App() {
     return mines
   }
 
-  const generateTable = () => {
+  const generateTableCellsInfo = () => {
     const newTableCellsInfo = Array(TABLE_SIZE * TABLE_SIZE)
     for (let i = 0; i < BOMB_COUNT; i++) {
       const randomIndex = Math.floor(Math.random() * TABLE_SIZE * TABLE_SIZE)
@@ -49,16 +49,47 @@ function App() {
       }
 
       const numberOfMines = minesAround(newTableCellsInfo, i)
-      let numberSymbol = SYMBOLS[numberOfMines]
-      if (numberSymbol === SYMBOLS[0]) {
-        numberSymbol = ''
-      }
-
-      newTableCellsInfo[i] = numberSymbol
+      newTableCellsInfo[i] = SYMBOLS[numberOfMines]
     }
 
-    setTableCellsInfo(newTableCellsInfo)
     return newTableCellsInfo
+  }
+
+  const isOutOfBound = (i) => i < 0 || i >= TABLE_SIZE * TABLE_SIZE
+  const isInSameRow = (i1, i2) => Math.floor(i1 / TABLE_SIZE) === Math.floor(i2 / TABLE_SIZE)
+
+  const generateTableCells = (newTableCells, newTableCellsInfo, index) => {
+    if (newTableCells[index] !== null) {
+      // The cell has already been discovered
+      return newTableCells
+    }
+    if (newTableCellsInfo[index] === SYMBOLS.BOMB) {
+      // The cell is a bomb
+      return newTableCells
+    }
+
+    newTableCells[index] = newTableCellsInfo[index]
+    if (newTableCells[index] !== SYMBOLS[0]) {
+      // The cell has a bomb nearby
+      return newTableCells
+    }
+
+
+    const topAndDown = [index - TABLE_SIZE, index + TABLE_SIZE]
+    for (const i of topAndDown) {
+      if (!isOutOfBound(i)) {
+        newTableCells = generateTableCells(newTableCells, newTableCellsInfo, i)
+      }
+    }
+
+    const leftAndRight = [index - 1, index + 1]
+    for (const i of leftAndRight) {
+      if (!isOutOfBound(i) && isInSameRow(index, i)) {
+        newTableCells = generateTableCells(newTableCells, newTableCellsInfo, i)
+      }
+    }
+
+    return newTableCells
   }
 
   const updateGame = (index) => {
@@ -67,16 +98,19 @@ function App() {
       return
     }
 
-    let newCellValue = ""
     if (isFirstPlay) {
-      const table = generateTable()
-      newCellValue = table[index]
-    } else {
-      newCellValue = tableCellsInfo[index]
+      const newTableCellsInfo = generateTableCellsInfo()
+      setTableCellsInfo(newTableCellsInfo)
+
+      let newTableCells = [...tableCells]
+      newTableCells = generateTableCells(newTableCells, newTableCellsInfo, index)
+      setTableCells(newTableCells)
+
+      return
     }
 
     const newTableCells = [...tableCells]
-    newTableCells[index] = newCellValue
+    newTableCells[index] = tableCellsInfo[index]
     setTableCells(newTableCells)
   }
 
