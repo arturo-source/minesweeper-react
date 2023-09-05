@@ -12,6 +12,7 @@ function App() {
     const [totalBombs, setTotalBombs] = useState(DEFAULT_TOTAL_BOMBS)
     const [tableSize, setTableSize] = useState(DEFAULT_TABLE_SIZE)
     const [randomSeed, setRandomSeed] = useState(DEFAULT_RANDOM_SEED)
+    const [isDebugMode, setIsDebugMode] = useState(false)
 
     const [tableCells, setTableCells] = useState(Array(tableSize * tableSize).fill(null))
     const [tableCellsInfo, setTableCellsInfo] = useState(Array(tableSize * tableSize).fill(null))
@@ -57,6 +58,7 @@ function App() {
                 totalBombs={totalBombs}
                 tableSize={tableSize}
                 randomSeed={randomSeed}
+                isDebugMode={isDebugMode}
                 playerHasLost={playerHasLost}
                 playerHasWon={playerHasWon}
                 tableCells={tableCells}
@@ -82,6 +84,8 @@ function App() {
                     setTableSize={setTableSize}
                     randomSeed={randomSeed}
                     setRandomSeed={setRandomSeed}
+                    isDebugMode={isDebugMode}
+                    setIsDebugMode={setIsDebugMode}
                 />
             }
         </main>

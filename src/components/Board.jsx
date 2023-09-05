@@ -5,7 +5,7 @@ import { Square } from './Square.jsx'
 
 export function Board({
     playerHasWon, playerHasLost,
-    totalBombs, tableSize, randomSeed,
+    totalBombs, tableSize, randomSeed, isDebugMode,
     tableCells, setTableCells, tableCellsInfo, setTableCellsInfo,
     restartGame
 }) {
@@ -161,6 +161,9 @@ export function Board({
         setTableCells(newTableCells)
     }
 
+    let cellsToShow = tableCells
+    if (isDebugMode) cellsToShow = tableCellsInfo
+
     return (
         <section
             style={{
@@ -170,7 +173,7 @@ export function Board({
             }}
         >
             {
-                tableCells.map((cell, index) => (
+                cellsToShow.map((cell, index) => (
                     <Square
                         key={index}
                         index={index}
