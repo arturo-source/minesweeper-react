@@ -87,7 +87,7 @@ export function Board({
         return newTableCellsInfo
     }
 
-    const generateTableCells = (newTableCells, newTableCellsInfo, index) => {
+    const revealAllPossibleCells = (newTableCells, newTableCellsInfo, index) => {
         if (newTableCells[index] !== null) {
             // The cell has already been discovered
             return newTableCells
@@ -103,14 +103,13 @@ export function Board({
             return newTableCells
         }
 
-
         const row = Math.floor(index / tableSize)
         const col = index % tableSize
         for (let i = row - 1; i <= row + 1; i++) {
             for (let j = col - 1; j <= col + 1; j++) {
                 const newIndex = i * tableSize + j
                 if (!isOutOfBound(i) && areClose(index, newIndex)) {
-                    newTableCells = generateTableCells(newTableCells, newTableCellsInfo, newIndex)
+                    newTableCells = revealAllPossibleCells(newTableCells, newTableCellsInfo, newIndex)
                 }
             }
         }
@@ -132,20 +131,20 @@ export function Board({
         const alreadyDiscovered = tableCells[index] !== null
         if (alreadyDiscovered) return
 
+        let newTableCellsInfo = [...tableCellsInfo]
         if (isFirstPlay) {
-            const newTableCellsInfo = generateTableCellsInfo(index)
+            newTableCellsInfo = generateTableCellsInfo(index)
             setTableCellsInfo(newTableCellsInfo)
-
-            let newTableCells = [...tableCells]
-            newTableCells = generateTableCells(newTableCells, newTableCellsInfo, index)
-            setTableCells(newTableCells)
-
-            return
         }
 
-        const cellToDiscover = tableCellsInfo[index]
-        const newTableCells = [...tableCells]
-        newTableCells[index] = cellToDiscover
+        let newTableCells = [...tableCells]
+        newTableCells = revealAllPossibleCells(newTableCells, newTableCellsInfo, index)
+
+        if (newTableCellsInfo[index] === SYMBOLS.BOMB) {
+            // revealAllPossibleCells will not reveal the bomb, so we do it manually
+            newTableCells[index] = SYMBOLS.BOMB
+        }
+
         setTableCells(newTableCells)
     }
 
