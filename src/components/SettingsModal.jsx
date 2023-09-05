@@ -48,6 +48,8 @@ export function SettingsModal({ close, totalBombs, tableSize, randomSeed, setTot
                             type='number'
                             value={totalBombs}
                             onChange={(e) => setTotalBombs(e.target.value)}
+                            min={1}
+                            max={tableSize * tableSize - 9}
                         />
                     </div>
                     <div>
@@ -58,6 +60,7 @@ export function SettingsModal({ close, totalBombs, tableSize, randomSeed, setTot
                             type='number'
                             value={tableSize}
                             onChange={(e) => setTableSize(e.target.value)}
+                            min={3}
                         />
                     </div>
                     <div>

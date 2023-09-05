@@ -117,6 +117,13 @@ function App() {
     if (cellToDiscover === SYMBOLS.BOMB) setPlayerHasLost(true)
   }
 
+  const restartGame = () => {
+    setPlayerHasLost(false)
+    setPlayerHasWon(false)
+    setTableCells(Array(tableSize * tableSize).fill(null))
+    setTableCellsInfo(Array(tableSize * tableSize).fill(null))
+  }
+
   return (
     <main className='board'>
       <header
@@ -147,6 +154,10 @@ function App() {
           ))
         }
       </section>
+      <button onClick={restartGame}>
+        Restart Game
+      </button>
+
       {playerHasLost && <p>Game Over</p>}
       {playerHasWon && <p>You Won</p>}
 
