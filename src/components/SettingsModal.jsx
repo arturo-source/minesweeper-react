@@ -1,6 +1,11 @@
 import { DIFFICULTIES, DEFAULT_RANDOM_SEED, DEFAULT_TABLE_SIZE, DEFAULT_TOTAL_BOMBS } from "../constants.js"
 
-export function SettingsModal({ close, totalBombs, tableSize, randomSeed, isDebugMode, setTotalBombs, setTableSize, setRandomSeed, setIsDebugMode }) {
+export function SettingsModal({ close,
+    totalBombs, setTotalBombs,
+    tableSize, setTableSize,
+    randomSeed, setRandomSeed,
+    isDebugMode, setIsDebugMode
+}) {
     const handleDifficultyChange = (e) => {
         const difficulty = e.target.value
         const nCells = tableSize * tableSize

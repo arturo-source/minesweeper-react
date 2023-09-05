@@ -3,7 +3,7 @@ import { SYMBOLS, DEFAULT_TABLE_SIZE, DEFAULT_TOTAL_BOMBS, DEFAULT_RANDOM_SEED }
 import { SettingsModal } from './components/SettingsModal.jsx'
 import { Board } from './components/Board'
 
-function App() {
+function Game() {
     const [playerHasLost, setPlayerHasLost] = useState(false)
     const [playerHasWon, setPlayerHasWon] = useState(false)
 
@@ -92,4 +92,4 @@ function App() {
     )
 }
 
-export default App
+export default Game
