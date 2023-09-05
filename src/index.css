@@ -58,12 +58,6 @@ body {
   color: #222;
 }
 
-.board .game {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 5px;
-}
-
 .modal .square {
   width: 70px;
   height: 70px;
