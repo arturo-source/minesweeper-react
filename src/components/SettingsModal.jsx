@@ -30,14 +30,10 @@ export function SettingsModal({ close, totalBombs, tableSize, randomSeed, setTot
                     <div>
                         <label htmlFor='difficulty'>Difficulty</label>
                         <br />
-                        <select id='difficulty'>
+                        <select id='difficulty' onChange={handleDifficultyChange}>
                             {
                                 Object.entries(DIFFICULTIES).map(([key, value]) => (
-                                    <option
-                                        key={key}
-                                        value={value}
-                                        onChange={handleDifficultyChange}
-                                    >
+                                    <option key={key} value={value}>
                                         {key}
                                     </option>
                                 ))
