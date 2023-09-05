@@ -54,9 +54,6 @@ export function Board({
     const isOutOfBound = (i) =>
         i < 0 || i >= tableSize * tableSize
 
-    const isInSameRow = (i1, i2) =>
-        Math.floor(i1 / tableSize) === Math.floor(i2 / tableSize)
-
     const generateTableCellsInfo = (index) => {
         let generateNumber = Math.random
         if (randomSeed !== -1) {
@@ -107,17 +104,14 @@ export function Board({
         }
 
 
-        const topAndDown = [index - tableSize, index + tableSize]
-        for (const i of topAndDown) {
-            if (!isOutOfBound(i)) {
-                newTableCells = generateTableCells(newTableCells, newTableCellsInfo, i)
-            }
-        }
-
-        const leftAndRight = [index - 1, index + 1]
-        for (const i of leftAndRight) {
-            if (!isOutOfBound(i) && isInSameRow(index, i)) {
-                newTableCells = generateTableCells(newTableCells, newTableCellsInfo, i)
+        const row = Math.floor(index / tableSize)
+        const col = index % tableSize
+        for (let i = row - 1; i <= row + 1; i++) {
+            for (let j = col - 1; j <= col + 1; j++) {
+                const newIndex = i * tableSize + j
+                if (!isOutOfBound(i) && areClose(index, newIndex)) {
+                    newTableCells = generateTableCells(newTableCells, newTableCellsInfo, newIndex)
+                }
             }
         }
 
