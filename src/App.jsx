@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { SYMBOLS, TABLE_SIZE, BOMB_COUNT } from './constants'
+import { SYMBOLS, TABLE_SIZE, BOMB_COUNT, RANDOM_SEED } from './constants'
 import { Square } from './components/Square.jsx'
+import { minesAround, isNear, isOutOfBound, isInSameRow, randomNumberGenerator } from './logic.js'
 
 function App() {
   const [tableCells, setTableCells] = useState(Array(TABLE_SIZE * TABLE_SIZE).fill(null))
@@ -8,34 +9,12 @@ function App() {
 
   const isFirstPlay = tableCells.every(cell => cell === null)
 
-  const minesAround = (table, index) => {
-    let mines = 0
-    const row = Math.floor(index / TABLE_SIZE)
-    const col = index % TABLE_SIZE
-
-    for (let i = row - 1; i <= row + 1; i++) {
-      if (i < 0 || i >= TABLE_SIZE) {
-        continue
-      }
-
-      for (let j = col - 1; j <= col + 1; j++) {
-        if (j < 0 || j >= TABLE_SIZE) {
-          continue
-        }
-
-        if (table[i * TABLE_SIZE + j] === SYMBOLS.BOMB) {
-          mines++
-        }
-      }
-    }
-
-    return mines
-  }
-
-  const generateTableCellsInfo = () => {
+  const generateTableCellsInfo = (index) => {
+    const newNumber = randomNumberGenerator(RANDOM_SEED)
     const newTableCellsInfo = Array(TABLE_SIZE * TABLE_SIZE)
+
     for (let i = 0; i < BOMB_COUNT; i++) {
-      const randomIndex = Math.floor(Math.random() * TABLE_SIZE * TABLE_SIZE)
+      const randomIndex = Math.floor(newNumber() * TABLE_SIZE * TABLE_SIZE)
       if (newTableCellsInfo[randomIndex] === SYMBOLS.BOMB) {
         i--
       }
@@ -54,9 +33,6 @@ function App() {
 
     return newTableCellsInfo
   }
-
-  const isOutOfBound = (i) => i < 0 || i >= TABLE_SIZE * TABLE_SIZE
-  const isInSameRow = (i1, i2) => Math.floor(i1 / TABLE_SIZE) === Math.floor(i2 / TABLE_SIZE)
 
   const generateTableCells = (newTableCells, newTableCellsInfo, index) => {
     if (newTableCells[index] !== null) {

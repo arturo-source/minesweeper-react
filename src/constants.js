@@ -22,3 +22,4 @@ export const DIFICULTIES = {
 
 export const TABLE_SIZE = 10;
 export const BOMB_COUNT = 10;
+export const RANDOM_SEED = 100;
