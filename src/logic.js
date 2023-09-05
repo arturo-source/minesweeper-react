@@ -24,7 +24,7 @@ export const minesAround = (table, index) => {
     return mines
 }
 
-export const isNear = (i1, i2) => {
+export const areClose = (i1, i2) => {
     const row1 = Math.floor(i1 / TABLE_SIZE)
     const col1 = i1 % TABLE_SIZE
     const row2 = Math.floor(i2 / TABLE_SIZE)
@@ -44,7 +44,7 @@ export const isInSameRow = (i1, i2) =>
 
 export const randomNumberGenerator = (seed) => {
     return () => {
-        const x = (seed * 9301 + 49297) % 233280;
-        return x / 233280;
+        const x = Math.sin(seed++) * 10000
+        return x - Math.floor(x)
     }
 }
