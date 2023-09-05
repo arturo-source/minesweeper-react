@@ -129,4 +129,5 @@ body {
   place-items: center;
   cursor: pointer;
   font-size: 24px;
+  user-select: none;
 }

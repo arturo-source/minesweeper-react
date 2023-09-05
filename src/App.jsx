@@ -89,6 +89,14 @@ function App() {
   const updateGame = (index) => {
     if (playerHasLost || playerHasWon) return
 
+    if (tableCells[index] === SYMBOLS.FLAG) {
+      const newTableCells = [...tableCells]
+      newTableCells[index] = null
+      setTableCells(newTableCells)
+
+      return
+    }
+
     const alreadyDiscovered = tableCells[index] !== null
     if (alreadyDiscovered) return
 
@@ -115,6 +123,17 @@ function App() {
     })
     if (isGameWon) setPlayerHasWon(true)
     if (cellToDiscover === SYMBOLS.BOMB) setPlayerHasLost(true)
+  }
+
+  const addFlag = (index) => {
+    if (playerHasLost || playerHasWon) return
+
+    const alreadyDiscovered = tableCells[index] !== null && tableCells[index] !== SYMBOLS.FLAG
+    if (alreadyDiscovered) return
+
+    const newTableCells = [...tableCells]
+    newTableCells[index] = tableCells[index] === SYMBOLS.FLAG ? null : SYMBOLS.FLAG
+    setTableCells(newTableCells)
   }
 
   const restartGame = () => {
@@ -148,6 +167,7 @@ function App() {
               key={index}
               index={index}
               updateGame={updateGame}
+              addFlag={addFlag}
             >
               {cell}
             </Square>
