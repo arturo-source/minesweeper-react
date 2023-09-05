@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react'
 import { SYMBOLS, DEFAULT_TABLE_SIZE, DEFAULT_TOTAL_BOMBS, DEFAULT_RANDOM_SEED } from './constants'
 import { SettingsModal } from './components/SettingsModal.jsx'
 import { Board } from './components/Board'
+import { GameStats } from './components/GameStats'
 
 function Game() {
     const [playerHasLost, setPlayerHasLost] = useState(false)
     const [playerHasWon, setPlayerHasWon] = useState(false)
+
+    const [timePlaying, setTimePlaying] = useState(0)
 
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
 
@@ -34,17 +37,12 @@ function Game() {
         setPlayerHasWon(false)
         setTableCells(Array(tableSize * tableSize).fill(null))
         setTableCellsInfo(Array(tableSize * tableSize).fill(null))
+        setTimePlaying(0)
     }
 
     return (
         <main className='board'>
-            <header
-                style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                }}
-            >
+            <header className='spaced-elements'>
                 <h1>Minesweeper</h1>
                 <button
                     onClick={() => setIsSettingsModalOpen(true)}
@@ -52,6 +50,13 @@ function Game() {
                     ⚙️
                 </button>
             </header>
+
+            <GameStats
+                tableCells={tableCells}
+                tableCellsInfo={tableCellsInfo}
+                timePlaying={timePlaying}
+                setTimePlaying={setTimePlaying}
+            />
             {/* TODO: count discovered cells - bombs missin - time playing (secs) */}
 
             <Board

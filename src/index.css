@@ -125,3 +125,9 @@ body {
   font-size: 24px;
   user-select: none;
 }
+
+.spaced-elements {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
