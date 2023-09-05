@@ -14,12 +14,12 @@ export const SYMBOLS = {
     BOMB_EXPLODED: '💥',
 };
 
-export const DIFICULTIES = {
+export const DIFFICULTIES = {
     EASY: 0.1,
     MEDIUM: 0.15,
     HARD: 0.25,
 };
 
-export const TABLE_SIZE = 10;
-export const BOMB_COUNT = 2;
-export const RANDOM_SEED = 100;
+export const DEFAULT_TABLE_SIZE = 10;
+export const DEFAULT_TOTAL_BOMBS = 10;
+export const DEFAULT_RANDOM_SEED = -1;

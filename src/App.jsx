@@ -1,23 +1,33 @@
 import { useState } from 'react'
-import { SYMBOLS, TABLE_SIZE, BOMB_COUNT, RANDOM_SEED } from './constants'
-import { Square } from './components/Square.jsx'
+import { SYMBOLS, DEFAULT_TABLE_SIZE, DEFAULT_TOTAL_BOMBS, DEFAULT_RANDOM_SEED } from './constants'
 import { minesAround, areClose, isOutOfBound, isInSameRow, randomNumberGenerator } from './logic.js'
+import { Square } from './components/Square.jsx'
+import { SettingsModal } from './components/SettingsModal.jsx'
 
 function App() {
-  const [tableCells, setTableCells] = useState(Array(TABLE_SIZE * TABLE_SIZE).fill(null))
-  const [tableCellsInfo, setTableCellsInfo] = useState(Array(TABLE_SIZE * TABLE_SIZE).fill(null))
-
   const [playerHasLost, setPlayerHasLost] = useState(false)
   const [playerHasWon, setPlayerHasWon] = useState(false)
+
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+
+  const [totalBombs, setTotalBombs] = useState(DEFAULT_TOTAL_BOMBS)
+  const [tableSize, setTableSize] = useState(DEFAULT_TABLE_SIZE)
+  const [randomSeed, setRandomSeed] = useState(DEFAULT_RANDOM_SEED)
+
+  const [tableCells, setTableCells] = useState(Array(tableSize * tableSize).fill(null))
+  const [tableCellsInfo, setTableCellsInfo] = useState(Array(tableSize * tableSize).fill(null))
 
   const isFirstPlay = tableCells.every(cell => cell === null)
 
   const generateTableCellsInfo = (index) => {
-    const generateNumber = randomNumberGenerator(RANDOM_SEED)
-    const newTableCellsInfo = Array(TABLE_SIZE * TABLE_SIZE)
+    let generateNumber = Math.random
+    if (randomSeed !== -1) {
+      generateNumber = randomNumberGenerator(randomSeed)
+    }
 
-    for (let i = 0; i < BOMB_COUNT; i++) {
-      const randomIndex = Math.floor(generateNumber() * TABLE_SIZE * TABLE_SIZE)
+    const newTableCellsInfo = Array(tableSize * tableSize)
+    for (let i = 0; i < totalBombs; i++) {
+      const randomIndex = Math.floor(generateNumber() * tableSize * tableSize)
       if (areClose(index, randomIndex)) {
         i--
         continue
@@ -30,7 +40,7 @@ function App() {
       newTableCellsInfo[randomIndex] = SYMBOLS.BOMB
     }
 
-    for (let i = 0; i < TABLE_SIZE * TABLE_SIZE; i++) {
+    for (let i = 0; i < tableSize * tableSize; i++) {
       if (newTableCellsInfo[i] === SYMBOLS.BOMB) {
         continue
       }
@@ -59,7 +69,7 @@ function App() {
     }
 
 
-    const topAndDown = [index - TABLE_SIZE, index + TABLE_SIZE]
+    const topAndDown = [index - tableSize, index + tableSize]
     for (const i of topAndDown) {
       if (!isOutOfBound(i)) {
         newTableCells = generateTableCells(newTableCells, newTableCellsInfo, i)
@@ -98,7 +108,6 @@ function App() {
     newTableCells[index] = cellToDiscover
     setTableCells(newTableCells)
 
-
     const isGameWon = newTableCells.every((cell, index) => {
       const isBomb = tableCellsInfo[index] === SYMBOLS.BOMB
       const isDiscovered = cell !== null
@@ -110,7 +119,21 @@ function App() {
 
   return (
     <main className='board'>
-      <h1>Minesweeper</h1>
+      <header
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <h1>Minesweeper</h1>
+        <button
+          onClick={() => setIsSettingsModalOpen(true)}
+        >
+          ⚙️
+        </button>
+      </header>
+      {/* TODO: count discovered cells - bombs missin - time playing (secs) */}
       <section className='game'>
         {
           tableCells.map((cell, index) => (
@@ -126,6 +149,18 @@ function App() {
       </section>
       {playerHasLost && <p>Game Over</p>}
       {playerHasWon && <p>You Won</p>}
+
+      {isSettingsModalOpen &&
+        <SettingsModal
+          close={() => setIsSettingsModalOpen(false)}
+          totalBombs={totalBombs}
+          setTotalBombs={setTotalBombs}
+          tableSize={tableSize}
+          setTableSize={setTableSize}
+          randomSeed={randomSeed}
+          setRandomSeed={setRandomSeed}
+        />
+      }
     </main>
   )
 }
