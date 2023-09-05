@@ -7,6 +7,9 @@ function App() {
   const [tableCells, setTableCells] = useState(Array(TABLE_SIZE * TABLE_SIZE).fill(null))
   const [tableCellsInfo, setTableCellsInfo] = useState(Array(TABLE_SIZE * TABLE_SIZE).fill(null))
 
+  const [playerHasLost, setPlayerHasLost] = useState(false)
+  const [playerHasWon, setPlayerHasWon] = useState(false)
+
   const isFirstPlay = tableCells.every(cell => cell === null)
 
   const generateTableCellsInfo = (index) => {
@@ -74,10 +77,10 @@ function App() {
   }
 
   const updateGame = (index) => {
+    if (playerHasLost || playerHasWon) return
+
     const alreadyDiscovered = tableCells[index] !== null
-    if (alreadyDiscovered) {
-      return
-    }
+    if (alreadyDiscovered) return
 
     if (isFirstPlay) {
       const newTableCellsInfo = generateTableCellsInfo(index)
@@ -90,9 +93,19 @@ function App() {
       return
     }
 
+    const cellToDiscover = tableCellsInfo[index]
     const newTableCells = [...tableCells]
-    newTableCells[index] = tableCellsInfo[index]
+    newTableCells[index] = cellToDiscover
     setTableCells(newTableCells)
+
+
+    const isGameWon = newTableCells.every((cell, index) => {
+      const isBomb = tableCellsInfo[index] === SYMBOLS.BOMB
+      const isDiscovered = cell !== null
+      return isBomb || isDiscovered
+    })
+    if (isGameWon) setPlayerHasWon(true)
+    if (cellToDiscover === SYMBOLS.BOMB) setPlayerHasLost(true)
   }
 
   return (
@@ -111,6 +124,8 @@ function App() {
           ))
         }
       </section>
+      {playerHasLost && <p>Game Over</p>}
+      {playerHasWon && <p>You Won</p>}
     </main>
   )
 }
