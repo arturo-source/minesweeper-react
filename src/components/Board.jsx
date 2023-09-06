@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { randomNumberGenerator } from '../utils.js'
 import { SYMBOLS } from '../constants.js'
 import { Square } from './Square.jsx'
@@ -9,11 +9,20 @@ export function Board({
     tableCells, setTableCells, tableCellsInfo, setTableCellsInfo,
     restartGame
 }) {
+    const [squareSize, setSquareSize] = useState(50)
     const isFirstPlay = tableCells.every(cell => cell === null)
 
     useEffect(() => {
         restartGame()
     }, [totalBombs, tableSize, randomSeed])
+
+    useEffect(() => {
+        const windowSize = window.screen.width
+        let newSquareSize = windowSize / (tableSize + 2)
+        if (newSquareSize > 50) newSquareSize = 50
+        if (newSquareSize < 30) newSquareSize = 30
+        setSquareSize(newSquareSize)
+    }, [window.screen.width])
 
     const minesAround = (table, index) => {
         let mines = 0
@@ -162,11 +171,6 @@ export function Board({
 
     let cellsToShow = tableCells
     if (isDebugMode) cellsToShow = tableCellsInfo
-
-    const windowSize = window.screen.width
-    let squareSize = windowSize / (tableSize + 2)
-    if (squareSize > 50) squareSize = 50
-    if (squareSize < 30) squareSize = 30
 
     return (
         <section
