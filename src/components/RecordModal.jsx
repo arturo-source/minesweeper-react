@@ -2,17 +2,23 @@ import { useEffect, useState } from "react"
 import { RECORDS_KEY } from "../constants"
 
 export function RecordModal({ close }) {
+    const ALL_KEY = 'All'
+
     const [minesweeperRecords, setMinesweeperRecords] = useState([])
-    const [sizeFilter, setSizeFilter] = useState(0)
-    const [bombsFilter, setBombsFilter] = useState(0)
+
+    const [sizeFilter, setSizeFilter] = useState(ALL_KEY)
+    const [bombsFilter, setBombsFilter] = useState(ALL_KEY)
+
+    const [sizeFilterValues, setSizeFilterValues] = useState([])
+    const [bombsFilterValues, setBombsFilterValues] = useState([])
 
     useEffect(() => {
         let records = JSON.parse(localStorage.getItem(RECORDS_KEY)) || []
 
-        if (sizeFilter != 0)
+        if (sizeFilter != ALL_KEY)
             records = records.filter(record => record.tableSize === sizeFilter)
 
-        if (bombsFilter != 0)
+        if (bombsFilter != ALL_KEY)
             records = records.filter(record => record.totalBombs === bombsFilter)
 
         records.sort((a, b) => a.timePlaying - b.timePlaying)
@@ -20,6 +26,21 @@ export function RecordModal({ close }) {
 
         setMinesweeperRecords(records)
     }, [sizeFilter, bombsFilter])
+
+    useEffect(() => {
+        const records = JSON.parse(localStorage.getItem(RECORDS_KEY)) || []
+
+        let sizeValues = records.map(record => record.tableSize)
+        sizeValues = [...new Set(sizeValues)]
+        sizeValues.sort((a, b) => b - a)
+
+        let bombsValues = records.map(record => record.totalBombs)
+        bombsValues = [...new Set(bombsValues)]
+        bombsValues.sort((a, b) => b - a)
+
+        setSizeFilterValues(sizeValues)
+        setBombsFilterValues(bombsValues)
+    }, [])
 
     return (
         <section className='modal'>
@@ -36,22 +57,36 @@ export function RecordModal({ close }) {
                 <div>
                     <label htmlFor='tableSize'>Size</label>
                     <br />
-                    <input
+                    <select
+                        name="tableSize"
                         id="tableSize"
-                        type="number"
-                        value={sizeFilter}
-                        onChange={(e) => setSizeFilter(e.target.value)}
-                    />
+                        onChange={e => setSizeFilter(e.target.value)}
+                        style={{ width: '100%' }}
+                    >
+                        <option value={ALL_KEY}>All</option>
+                        {
+                            sizeFilterValues.map((value, index) => (
+                                <option key={index} value={value}>{value}</option>
+                            ))
+                        }
+                    </select>
                 </div>
                 <div>
                     <label htmlFor='totalBombs'>Bombs</label>
                     <br />
-                    <input
+                    <select
+                        name="totalBombs"
                         id="totalBombs"
-                        type="number"
-                        value={bombsFilter}
-                        onChange={(e) => setBombsFilter(e.target.value)}
-                    />
+                        onChange={e => setBombsFilter(e.target.value)}
+                        style={{ width: '100%' }}
+                    >
+                        <option value={ALL_KEY}>All</option>
+                        {
+                            bombsFilterValues.map((value, index) => (
+                                <option key={index} value={value}>{value}</option>
+                            ))
+                        }
+                    </select>
                 </div>
                 <table>
                     <thead>
