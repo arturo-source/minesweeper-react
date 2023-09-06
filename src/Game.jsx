@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { SYMBOLS, DEFAULT_TABLE_SIZE, DEFAULT_TOTAL_BOMBS, DEFAULT_RANDOM_SEED } from './constants'
+import { SYMBOLS, DEFAULT_TABLE_SIZE, DEFAULT_TOTAL_BOMBS, DEFAULT_RANDOM_SEED, RECORDS_KEY } from './constants'
 import { SettingsModal } from './components/SettingsModal.jsx'
 import { Board } from './components/Board'
 import { GameStats } from './components/GameStats'
+import { RecordModal } from './components/RecordModal'
 
 function Game() {
     const [playerHasLost, setPlayerHasLost] = useState(false)
@@ -11,6 +12,7 @@ function Game() {
     const [timePlaying, setTimePlaying] = useState(0)
 
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+    const [isRecordModalOpen, setIsRecordModalOpen] = useState(false)
 
     const [totalBombs, setTotalBombs] = useState(DEFAULT_TOTAL_BOMBS)
     const [tableSize, setTableSize] = useState(DEFAULT_TABLE_SIZE)
@@ -31,6 +33,18 @@ function Game() {
         const isGameOver = tableCells.some(cell => cell === SYMBOLS.BOMB)
         if (isGameOver) setPlayerHasLost(true)
     }, [tableCells, tableCellsInfo])
+
+    useEffect(() => {
+        if (!playerHasWon) return
+
+        const minesweeperRecord = JSON.parse(localStorage.getItem(RECORDS_KEY)) || []
+        const newMinesweeperRecord = [
+            ...minesweeperRecord,
+            { tableSize, totalBombs, timePlaying }
+        ]
+
+        localStorage.setItem(RECORDS_KEY, JSON.stringify(newMinesweeperRecord))
+    }, [playerHasWon])
 
     const restartGame = () => {
         setPlayerHasLost(false)
@@ -72,6 +86,9 @@ function Game() {
                 restartGame={restartGame}
             />
 
+            <button onClick={() => setIsRecordModalOpen(true)}>
+                See Records
+            </button>
             <button onClick={restartGame}>
                 Restart Game
             </button>
@@ -90,6 +107,11 @@ function Game() {
                     setRandomSeed={setRandomSeed}
                     isDebugMode={isDebugMode}
                     setIsDebugMode={setIsDebugMode}
+                />
+            }
+            {isRecordModalOpen &&
+                <RecordModal
+                    close={() => setIsRecordModalOpen(false)}
                 />
             }
         </main>
