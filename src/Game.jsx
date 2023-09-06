@@ -23,7 +23,7 @@ function Game() {
     useEffect(() => {
         const isGameWon = tableCells.every((cell, index) => {
             const isBomb = tableCellsInfo[index] === SYMBOLS.BOMB
-            const isDiscovered = cell !== null
+            const isDiscovered = cell !== null && cell !== SYMBOLS.FLAG
             return isBomb || isDiscovered
         })
         if (isGameWon) setPlayerHasWon(true)
@@ -57,7 +57,6 @@ function Game() {
                 timePlaying={timePlaying}
                 setTimePlaying={setTimePlaying}
             />
-            {/* TODO: count discovered cells - bombs missin - time playing (secs) */}
 
             <Board
                 totalBombs={totalBombs}

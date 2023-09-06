@@ -8,6 +8,8 @@ export function SettingsModal({ close,
 }) {
     const handleDifficultyChange = (e) => {
         const difficulty = e.target.value
+        if (isNaN(difficulty)) return
+
         const nCells = tableSize * tableSize
         const totalBombs = Math.floor(nCells * difficulty)
         setTotalBombs(totalBombs)
@@ -36,6 +38,7 @@ export function SettingsModal({ close,
                         <label htmlFor='difficulty'>Difficulty</label>
                         <br />
                         <select id='difficulty' onChange={handleDifficultyChange}>
+                            <option>Choose</option>
                             {
                                 Object.entries(DIFFICULTIES).map(([key, value]) => (
                                     <option key={key} value={value}>

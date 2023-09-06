@@ -163,6 +163,11 @@ export function Board({
     let cellsToShow = tableCells
     if (isDebugMode) cellsToShow = tableCellsInfo
 
+    const windowSize = window.screen.width
+    let squareSize = windowSize / (tableSize + 2)
+    if (squareSize > 50) squareSize = 50
+    if (squareSize < 30) squareSize = 30
+
     return (
         <section
             style={{
@@ -176,6 +181,7 @@ export function Board({
                     <Square
                         key={index}
                         index={index}
+                        squareSize={squareSize}
                         updateGame={updateGame}
                         addFlag={addFlag}
                     >
