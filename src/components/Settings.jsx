@@ -1,6 +1,6 @@
 import { DIFFICULTIES, DEFAULT_RANDOM_SEED, DEFAULT_TABLE_SIZE, DEFAULT_TOTAL_BOMBS } from "../constants.js"
 
-export function SettingsModal({ close,
+export function Settings({
     totalBombs, setTotalBombs,
     tableSize, setTableSize,
     randomSeed, setRandomSeed,

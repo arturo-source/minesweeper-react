@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { RECORDS_KEY } from "../constants"
 
-export function RecordModal({ }) {
+export function Record({ }) {
     const ALL_KEY = 'All'
 
     const [minesweeperRecords, setMinesweeperRecords] = useState([])
@@ -92,7 +92,7 @@ export function RecordModal({ }) {
                     {
                         minesweeperRecords.map((record, index) => (
                             <tr key={index}>
-                                <td>{index}.</td>
+                                <td>{index + 1}.</td>
                                 <td>{record.name}</td>
                                 <td>{record.tableSize}</td>
                                 <td>{record.totalBombs}</td>

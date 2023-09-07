@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { SYMBOLS, DEFAULT_TABLE_SIZE, DEFAULT_TOTAL_BOMBS, DEFAULT_RANDOM_SEED, RECORDS_KEY } from './constants'
-import { SettingsModal } from './components/SettingsModal.jsx'
+import { Settings } from './components/Settings.jsx'
 import { Board } from './components/Board'
 import { GameStats } from './components/GameStats'
-import { RecordModal } from './components/RecordModal'
+import { Record } from './components/Records'
 import { Modal } from './components/Modal'
 
 function Game() {
@@ -99,7 +99,7 @@ function Game() {
 
             {isSettingsModalOpen &&
                 <Modal title={"Settings"} close={() => setIsSettingsModalOpen(false)} >
-                    <SettingsModal
+                    <Settings
                         totalBombs={totalBombs}
                         setTotalBombs={setTotalBombs}
                         tableSize={tableSize}
@@ -113,7 +113,7 @@ function Game() {
             }
             {isRecordModalOpen &&
                 <Modal title={"Records"} close={() => setIsRecordModalOpen(false)}>
-                    <RecordModal />
+                    <Record />
                 </Modal>
             }
         </main>
