@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import confetti from 'canvas-confetti'
 import { SYMBOLS, DEFAULT_TABLE_SIZE, DEFAULT_TOTAL_BOMBS, DEFAULT_RANDOM_SEED } from './constants'
 import { Settings } from './components/Settings.jsx'
 import { Board } from './components/Board'
@@ -41,6 +42,7 @@ function Game() {
     useEffect(() => {
         if (!playerHasWon) return
         setGameFinalStats({ tableSize, totalBombs, timePlaying })
+        confetti()
     }, [playerHasWon])
 
     const restartGame = () => {
