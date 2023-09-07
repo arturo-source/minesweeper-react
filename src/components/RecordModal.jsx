@@ -91,6 +91,8 @@ export function RecordModal({ close }) {
                 <table>
                     <thead>
                         <tr>
+                            <th></th>
+                            <th>Name</th>
                             <th>Size</th>
                             <th>Bombs</th>
                             <th>Time</th>
@@ -100,6 +102,8 @@ export function RecordModal({ close }) {
                         {
                             minesweeperRecords.map((record, index) => (
                                 <tr key={index}>
+                                    <td>{index}</td>
+                                    <td>{record.name}</td>
                                     <td>{record.tableSize}</td>
                                     <td>{record.totalBombs}</td>
                                     <td>{record.timePlaying}</td>
