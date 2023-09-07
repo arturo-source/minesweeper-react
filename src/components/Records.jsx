@@ -16,10 +16,10 @@ export function Record({ }) {
         let records = JSON.parse(localStorage.getItem(RECORDS_KEY)) || []
 
         if (sizeFilter != ALL_KEY)
-            records = records.filter(record => record.tableSize === sizeFilter)
+            records = records.filter(record => record.tableSize == sizeFilter)
 
         if (bombsFilter != ALL_KEY)
-            records = records.filter(record => record.totalBombs === bombsFilter)
+            records = records.filter(record => record.totalBombs == bombsFilter)
 
         records.sort((a, b) => a.timePlaying - b.timePlaying)
         records = records.slice(0, 10)
@@ -30,11 +30,11 @@ export function Record({ }) {
     useEffect(() => {
         const records = JSON.parse(localStorage.getItem(RECORDS_KEY)) || []
 
-        let sizeValues = records.map(record => record.tableSize)
+        let sizeValues = records.map(record => parseInt(record.tableSize))
         sizeValues = [...new Set(sizeValues)]
         sizeValues.sort((a, b) => b - a)
 
-        let bombsValues = records.map(record => record.totalBombs)
+        let bombsValues = records.map(record => parseInt(record.totalBombs))
         bombsValues = [...new Set(bombsValues)]
         bombsValues.sort((a, b) => b - a)
 

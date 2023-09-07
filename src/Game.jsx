@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react'
-import { SYMBOLS, DEFAULT_TABLE_SIZE, DEFAULT_TOTAL_BOMBS, DEFAULT_RANDOM_SEED, RECORDS_KEY } from './constants'
+import { SYMBOLS, DEFAULT_TABLE_SIZE, DEFAULT_TOTAL_BOMBS, DEFAULT_RANDOM_SEED } from './constants'
 import { Settings } from './components/Settings.jsx'
 import { Board } from './components/Board'
 import { GameStats } from './components/GameStats'
 import { Record } from './components/Records'
 import { Modal } from './components/Modal'
+import { RecordSaver } from './components/RecordSaver'
 
 function Game() {
     const [playerHasLost, setPlayerHasLost] = useState(false)
     const [playerHasWon, setPlayerHasWon] = useState(false)
 
     const [timePlaying, setTimePlaying] = useState(0)
+
+    const [gameFinalStats, setGameFinalStats] = useState({})
 
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
     const [isRecordModalOpen, setIsRecordModalOpen] = useState(false)
@@ -37,14 +40,7 @@ function Game() {
 
     useEffect(() => {
         if (!playerHasWon) return
-
-        const minesweeperRecord = JSON.parse(localStorage.getItem(RECORDS_KEY)) || []
-        const newMinesweeperRecord = [
-            ...minesweeperRecord,
-            { tableSize, totalBombs, timePlaying }
-        ]
-
-        localStorage.setItem(RECORDS_KEY, JSON.stringify(newMinesweeperRecord))
+        setGameFinalStats({ tableSize, totalBombs, timePlaying })
     }, [playerHasWon])
 
     const restartGame = () => {
@@ -94,9 +90,15 @@ function Game() {
                 Restart Game
             </button>
 
-            {playerHasLost && <p>Game Over</p>}
-            {playerHasWon && <p>You Won</p>}
-
+            {playerHasWon &&
+                <Modal title={"You Won"} close={restartGame}>
+                    <RecordSaver
+                        restartGame={restartGame}
+                        gameStats={gameFinalStats}
+                    />
+                </Modal>
+            }
+            {playerHasLost && <Modal title={"Game Over"} close={restartGame} />}
             {isSettingsModalOpen &&
                 <Modal title={"Settings"} close={() => setIsSettingsModalOpen(false)} >
                     <Settings
