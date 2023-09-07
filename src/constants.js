@@ -23,5 +23,5 @@ export const DIFFICULTIES = {
 export const RECORDS_KEY = "minesweeperRecord";
 
 export const DEFAULT_TABLE_SIZE = 10;
-export const DEFAULT_TOTAL_BOMBS = 10;
+export const DEFAULT_TOTAL_BOMBS = 15;
 export const DEFAULT_RANDOM_SEED = -1;

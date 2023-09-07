@@ -1,4 +1,5 @@
 import { DIFFICULTIES, DEFAULT_RANDOM_SEED, DEFAULT_TABLE_SIZE, DEFAULT_TOTAL_BOMBS } from "../constants.js"
+import { clampInt } from "../utils.js"
 
 export function Settings({
     totalBombs, setTotalBombs,
@@ -19,6 +20,23 @@ export function Settings({
         setTotalBombs(DEFAULT_TOTAL_BOMBS)
         setTableSize(DEFAULT_TABLE_SIZE)
         setRandomSeed(DEFAULT_RANDOM_SEED)
+    }
+
+    const handleBombsChange = (e) => {
+        let bombs = e.target.value
+        const maxBombs = tableSize * tableSize - 9
+        bombs = clampInt(bombs, 1, maxBombs)
+
+        setTotalBombs(bombs)
+    }
+
+    const handleTableSizeChange = (e) => {
+        let tSize = e.target.value
+        const maxBombs = tSize * tSize - 9
+        if (totalBombs > maxBombs) setTotalBombs(maxBombs)
+
+        tSize = clampInt(tSize, 4, 20)
+        setTableSize(tSize)
     }
 
     return (
@@ -45,9 +63,7 @@ export function Settings({
                         id='nbombs'
                         type='number'
                         value={totalBombs}
-                        onChange={(e) => setTotalBombs(e.target.value)}
-                        min={1}
-                        max={tableSize * tableSize - 9}
+                        onChange={handleBombsChange}
                     />
                 </div>
                 <div>
@@ -57,8 +73,7 @@ export function Settings({
                         id='tsize'
                         type='number'
                         value={tableSize}
-                        onChange={(e) => setTableSize(e.target.value)}
-                        min={3}
+                        onChange={handleTableSizeChange}
                     />
                 </div>
                 <div>

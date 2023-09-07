@@ -100,7 +100,20 @@ function Game() {
                     />
                 </Modal>
             }
-            {playerHasLost && <Modal title={"Game Over"} close={restartGame} />}
+            {playerHasLost &&
+                <Modal title={"Game Over"} close={restartGame}>
+                    <div>
+                        <label htmlFor='isDebugMode'>Reveal board</label>
+                        <br />
+                        <input
+                            id='isDebugMode'
+                            type='checkbox'
+                            checked={isDebugMode}
+                            onChange={(e) => setIsDebugMode(e.target.checked)}
+                        />
+                    </div>
+                </Modal>
+            }
             {isSettingsModalOpen &&
                 <Modal title={"Settings"} close={() => setIsSettingsModalOpen(false)} >
                     <Settings
