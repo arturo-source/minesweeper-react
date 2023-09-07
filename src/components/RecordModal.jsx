@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { RECORDS_KEY } from "../constants"
 
-export function RecordModal({ close }) {
+export function RecordModal({ }) {
     const ALL_KEY = 'All'
 
     const [minesweeperRecords, setMinesweeperRecords] = useState([])
@@ -43,76 +43,65 @@ export function RecordModal({ close }) {
     }, [])
 
     return (
-        <section className='modal'>
-            <div className='text'>
-                <header className='header'>
-                    <h2>Records</h2>
-                    <span
-                        onClick={() => close()}
-                        style={{ cursor: 'pointer' }}
-                    >
-                        ❌
-                    </span>
-                </header>
-                <div>
-                    <label htmlFor='tableSize'>Size</label>
-                    <br />
-                    <select
-                        name="tableSize"
-                        id="tableSize"
-                        onChange={e => setSizeFilter(e.target.value)}
-                        style={{ width: '100%' }}
-                    >
-                        <option value={ALL_KEY}>All</option>
-                        {
-                            sizeFilterValues.map((value, index) => (
-                                <option key={index} value={value}>{value}</option>
-                            ))
-                        }
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor='totalBombs'>Bombs</label>
-                    <br />
-                    <select
-                        name="totalBombs"
-                        id="totalBombs"
-                        onChange={e => setBombsFilter(e.target.value)}
-                        style={{ width: '100%' }}
-                    >
-                        <option value={ALL_KEY}>All</option>
-                        {
-                            bombsFilterValues.map((value, index) => (
-                                <option key={index} value={value}>{value}</option>
-                            ))
-                        }
-                    </select>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Bombs</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            minesweeperRecords.map((record, index) => (
-                                <tr key={index}>
-                                    <td>{index}</td>
-                                    <td>{record.name}</td>
-                                    <td>{record.tableSize}</td>
-                                    <td>{record.totalBombs}</td>
-                                    <td>{record.timePlaying}</td>
-                                </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
+        <>
+            <div>
+                <label htmlFor='tableSize'>Size</label>
+                <br />
+                <select
+                    name="tableSize"
+                    id="tableSize"
+                    onChange={e => setSizeFilter(e.target.value)}
+                    style={{ width: '100%' }}
+                >
+                    <option value={ALL_KEY}>All</option>
+                    {
+                        sizeFilterValues.map((value, index) => (
+                            <option key={index} value={value}>{value}</option>
+                        ))
+                    }
+                </select>
             </div>
-        </section>
+            <div>
+                <label htmlFor='totalBombs'>Bombs</label>
+                <br />
+                <select
+                    name="totalBombs"
+                    id="totalBombs"
+                    onChange={e => setBombsFilter(e.target.value)}
+                    style={{ width: '100%' }}
+                >
+                    <option value={ALL_KEY}>All</option>
+                    {
+                        bombsFilterValues.map((value, index) => (
+                            <option key={index} value={value}>{value}</option>
+                        ))
+                    }
+                </select>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Bombs</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        minesweeperRecords.map((record, index) => (
+                            <tr key={index}>
+                                <td>{index}.</td>
+                                <td>{record.name}</td>
+                                <td>{record.tableSize}</td>
+                                <td>{record.totalBombs}</td>
+                                <td>{record.timePlaying}</td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </>
     )
 }

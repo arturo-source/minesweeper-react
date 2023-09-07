@@ -4,6 +4,7 @@ import { SettingsModal } from './components/SettingsModal.jsx'
 import { Board } from './components/Board'
 import { GameStats } from './components/GameStats'
 import { RecordModal } from './components/RecordModal'
+import { Modal } from './components/Modal'
 
 function Game() {
     const [playerHasLost, setPlayerHasLost] = useState(false)
@@ -97,22 +98,23 @@ function Game() {
             {playerHasWon && <p>You Won</p>}
 
             {isSettingsModalOpen &&
-                <SettingsModal
-                    close={() => setIsSettingsModalOpen(false)}
-                    totalBombs={totalBombs}
-                    setTotalBombs={setTotalBombs}
-                    tableSize={tableSize}
-                    setTableSize={setTableSize}
-                    randomSeed={randomSeed}
-                    setRandomSeed={setRandomSeed}
-                    isDebugMode={isDebugMode}
-                    setIsDebugMode={setIsDebugMode}
-                />
+                <Modal title={"Settings"} close={() => setIsSettingsModalOpen(false)} >
+                    <SettingsModal
+                        totalBombs={totalBombs}
+                        setTotalBombs={setTotalBombs}
+                        tableSize={tableSize}
+                        setTableSize={setTableSize}
+                        randomSeed={randomSeed}
+                        setRandomSeed={setRandomSeed}
+                        isDebugMode={isDebugMode}
+                        setIsDebugMode={setIsDebugMode}
+                    />
+                </Modal>
             }
             {isRecordModalOpen &&
-                <RecordModal
-                    close={() => setIsRecordModalOpen(false)}
-                />
+                <Modal title={"Records"} close={() => setIsRecordModalOpen(false)}>
+                    <RecordModal />
+                </Modal>
             }
         </main>
     )
