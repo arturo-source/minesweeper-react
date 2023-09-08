@@ -1,8 +1,5 @@
-# React + Vite
+# Minesweeper created using React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is only a project to remember some [React](https://react.dev/) knowledges, just using useEffect and useState. I have used [SWC](https://swc.rs/) for Fast Refresh while developing.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+You can [try the game here](https://arturo-source.github.io/minesweeper/).
